@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  nginx:
+    image: daocloud.io/piresdev/nginx-php-fpm:v1.0.7
+    container_name: nginx
+    volumes:
+      - ./configs/nginx.conf.d:/etc/nginx/conf.d
+      - ./html:/var/www/html
+      - ./configs/supervisor.conf.d:/etc/supervisor/conf.d
+      - ./configs/crontab.d:/var/spool/cron/crontabs
+    environment:
+      VIRTUAL_HOST: boilerplate.pires.cn
+    network_mode: bridge
+    restart: always
