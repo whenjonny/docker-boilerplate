@@ -2,7 +2,10 @@ version: '3'
 
 services:
   nginx:
-    image: daocloud.io/piresdev/nginx-php-fpm:v1.0.7
+    depends_on:
+      - db
+    image: daocloud.io/piresdev/nginx-php-fpm:master
+    #image: php:7.1-fpm-alpine
     container_name: nginx
     volumes:
       - ./configs/nginx.conf.d:/etc/nginx/conf.d
@@ -12,4 +15,19 @@ services:
     environment:
       VIRTUAL_HOST: boilerplate.pires.cn
     network_mode: bridge
+    ports:
+      - 80:80
+      - 443:443
     restart: always
+  db:
+    image: daocloud.io/library/mysql:5.7.4
+    container_name: mysql
+    volumes:
+      - ./data:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: 123456
+    network_mode: bridge
