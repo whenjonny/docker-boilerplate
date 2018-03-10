@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   nginx:
@@ -14,20 +14,26 @@ services:
       - ./configs/crontab.d:/var/spool/cron/crontabs
     environment:
       VIRTUAL_HOST: boilerplate.pires.cn
-    network_mode: bridge
+    network_mode: host
     ports:
       - 80:80
       - 443:443
     restart: always
   db:
-    image: daocloud.io/library/mysql:5.7.4
+      #image: daocloud.io/library/mysql:5.7.4
+    image: mysql:5.7.21
     container_name: mysql
     volumes:
       - ./data:/var/lib/mysql
     ports:
       - 3306:3306
     environment:
-      MYSQL_USER: root
-      MYSQL_PASSWORD: 123456
-      MYSQL_ROOT_PASSWORD: 123456
-    network_mode: bridge
+      MYSQL_ROOT_PASSWORD: marathon52
+    network_mode: host
+  redis:
+    image: redis
+    container_name: redis
+    network_mode: host
+    ports:
+      - 6379:6379
+    restart: always
