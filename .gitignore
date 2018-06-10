@@ -1,0 +1,4 @@
+/configs/nginx.conf.d/
+/configs/certs/
+/data
+/html

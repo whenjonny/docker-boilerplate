@@ -12,6 +12,7 @@ services:
       - ./html:/var/www/html
       - ./configs/supervisor.conf.d:/etc/supervisor/conf.d
       - ./configs/crontab.d:/var/spool/cron/crontabs
+      - ./configs/certs:/etc/letsencrypt
     environment:
       VIRTUAL_HOST: boilerplate.pires.cn
     network_mode: host
