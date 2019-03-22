@@ -40,32 +40,57 @@ cd ~/boilerplate-docker/
 
 
 5. SSL Nginx 配置更改
-    server {
-        listen      443           ssl http2;
-        listen [::]:443           ssl http2;
-        server_name               ssl.suyo.tech;
 
-        ssl                       on;
+server {
+    listen      443           ssl http2;
+    listen [::]:443           ssl http2;
+    server_name               ssl.suyo.tech;
 
-        add_header                Strict-Transport-Security "max-age=31536000" always;
+    ssl                       on;
 
-        ssl_session_cache         shared:SSL:20m;
-        ssl_session_timeout       10m;
+    add_header                Strict-Transport-Security "max-age=31536000" always;
 
-        ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
-        ssl_prefer_server_ciphers on;
-        ssl_ciphers               "ECDH+AESGCM:ECDH+AES256:ECDH+AES128:!ADH:!AECDH:!MD5;";
+    ssl_session_cache         shared:SSL:20m;
+    ssl_session_timeout       10m;
 
-        ssl_stapling              on;
-        ssl_stapling_verify       on;
-        resolver                  8.8.8.8 8.8.4.4;
+    ssl_protocols             TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers               "ECDH+AESGCM:ECDH+AES256:ECDH+AES128:!ADH:!AECDH:!MD5;";
 
-        ssl_certificate           /etc/letsencrypt/live/ssl.suyo.tech/fullchain.pem;
-        ssl_certificate_key       /etc/letsencrypt/live/ssl.suyo.tech/privkey.pem;
-        ssl_trusted_certificate   /etc/letsencrypt/live/ssl.suyo.tech/chain.pem;
+    ssl_stapling              on;
+    ssl_stapling_verify       on;
+    resolver                  8.8.8.8 8.8.4.4;
 
-        access_log                /dev/stdout;
-        error_log                 /dev/stderr info;
+    ssl_certificate           /etc/letsencrypt/live/ssl.suyo.tech/fullchain.pem;
+    ssl_certificate_key       /etc/letsencrypt/live/ssl.suyo.tech/privkey.pem;
+    ssl_trusted_certificate   /etc/letsencrypt/live/ssl.suyo.tech/chain.pem;
 
-        # other configs
+    access_log                /dev/stdout;
+    error_log                 /dev/stderr info;
+
+    root /var/www/html/ssl.suyo.tech/public;
+    index index.html index.php index.htm;
+
+
+    # other configs
+
+    location / {
+            #try_files $uri $uri/ /index.php?$query_string;
+            proxy_pass http://weichestore.weicheche.cn;
     }
+
+    location ~ \.php$ {
+            try_files $uri =404;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass unix:/var/run/php-fpm.sock;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_NAME $fastcgi_script_name;
+            fastcgi_index index.php;
+            include fastcgi_params;
+    }
+
+    location ~ /\. {
+            log_not_found off;
+            deny all;
+    }
+}

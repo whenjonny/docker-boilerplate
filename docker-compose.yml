@@ -26,15 +26,17 @@ services:
     container_name: mysql
     volumes:
       - ./data:/var/lib/mysql
+      - ./configs/mysql.conf.d/mysql.conf:/etc/mysql/conf.d/mysql.cnf
     ports:
       - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: marathon52
     network_mode: host
-  redis:
-    image: redis
-    container_name: redis
-    network_mode: host
-    ports:
-      - 6379:6379
     restart: always
+    #redis:
+    #image: redis
+    #container_name: redis
+    #network_mode: host
+    #ports:
+    #- 6379:6379
+    #restart: always

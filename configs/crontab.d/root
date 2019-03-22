@@ -1,5 +1,4 @@
-* * * * * /usr/local/bin/php /var/www/html/eabc-date-thu/artisan schedule:run >> /dev/ null 2>&1
-* * * * * /usr/local/bin/php /var/www/html/eabc-six-penny/artisan schedule:run >> /dev/null 2>&1
-* * * * * /usr/local/bin/php /var/www/html/eabc-yaoyue/artisan schedule:run >> /dev/null 2>&1
-* * * * * /usr/local/bin/php /var/www/html/eabc-yfqcz/artisan schedule:run >> /dev/null 2>&1
-* * * * * echo /usr/bin/date >> /tmp/date.log
+#* * * * * /usr/local/bin/php /var/www/html/eabc-yfqcz/artisan schedule:run >> /dev/null 2>&1
+#* * * * * /usr/local/bin/php /var/www/html/integral.suyo.tech/artisan schedule:run >> /dev/null 2>&1
+#* * * * * /usr/local/bin/php /var/www/html/integral.suyo.tech/artisan queue:work --tries=3 >> /dev/null 2>&1
+#* * * * * date >> /tmp/date.log
