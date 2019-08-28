@@ -1,10 +1,10 @@
-## Https Configure
+## Https 配置
 
-Assume your hostname: ssl.suyo.tech
+假设域名为: ssl.suyo.tech
 
 cd ~/boilerplate-docker/
 
-1. add well-known configure
+1. 修改nginx配置
     ```
         location ^~ /.well-known {
             allow all;
@@ -12,7 +12,7 @@ cd ~/boilerplate-docker/
         }
     ```
 
-2. start letsencrypt
+2. 启动letsencrypt
 
     docker run -it --rm \
       -v $(pwd)/configs/certs:/etc/letsencrypt \
@@ -24,7 +24,7 @@ cd ~/boilerplate-docker/
       --agree-tos \
       -d ssl.suyo.tech
 
-3. renew letsencrypt
+3. 更新letsencrypt
 
     docker run -t --rm \
       -v $(pwd)/certs:/etc/letsencrypt \
@@ -39,7 +39,7 @@ cd ~/boilerplate-docker/
     0 0 */15 * * docker run -t --rm -v $(pwd)/certs:/etc/letsencrypt -v $(pwd)/html/ssl:/data/letsencrypt -v /var/log/letsencrypt:/var/log/letsencrypt deliverous/certbot renew --webroot --webroot-path=/data/letsencrypt && docker restart nginx >/dev/null 2>&1
 
 
-5. SSL Nginx after refresh
+5. SSL Nginx 配置更改
 
 server {
     listen      443           ssl http2;
